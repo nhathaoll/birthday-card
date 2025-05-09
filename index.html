@@ -52,8 +52,8 @@
       /* Container thiệp */
       .card-container {
         position: relative;
-        width: 800px;
-        height: 600px;
+        width: 1200px; /* Increase overall width */
+        height: 700px; /* Increase overall height */
         transform-style: preserve-3d;
         transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 10;
@@ -206,67 +206,37 @@
       .content-wrapper {
         display: flex;
         height: 100%;
-        gap: 40px;
+        gap: 160px; /* Increase gap for gift box */
+        padding: 30px;
+        position: relative;
+        align-items: center;
       }
 
       .image-container {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        flex: 1.8; /* Increase image container size */
+        height: 500px; /* Make taller */
+        transform: translateX(-30px); /* Move left */
       }
 
       .image-container img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        border: 5px solid white;
-        transition: transform 0.5s;
-      }
-
-      .image-container img:hover {
-        transform: scale(1.03);
+        border-radius: 25px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        border: 10px solid white;
       }
 
       .message-container {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        flex: 1.8; /* Increase message container size */
+        transform: translateX(30px); /* Move right */
       }
 
       .message {
-        background: rgba(255, 255, 255, 0.85);
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        transform: translateY(20px);
-        opacity: 0;
-        transition: all 0.5s ease;
-        transform-style: preserve-3d;
-      }
-
-      .message:hover {
-        transform: perspective(1000px) rotateX(5deg) rotateY(5deg)
-          translateZ(20px);
-        box-shadow: 0 25px 35px rgba(0, 0, 0, 0.1),
-          0 10px 15px rgba(0, 0, 0, 0.05);
-      }
-
-      .message h2 {
-        font-family: "Dancing Script", cursive;
-        font-size: 2.5rem;
-        color: #ff6b6b;
-        margin-bottom: 20px;
-      }
-
-      .message p {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        margin-bottom: 15px;
-        color: #333;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 40px;
+        border-radius: 25px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
       }
 
       .signature {
@@ -527,6 +497,24 @@
       }
 
       /* Responsive */
+      @media (max-width: 1100px) {
+        .card-container {
+          width: 90%;
+          height: auto;
+          min-height: 600px;
+        }
+
+        .content-wrapper {
+          gap: 100px;
+          padding: 20px;
+        }
+
+        .image-container,
+        .message-container {
+          transform: translateX(0);
+        }
+      }
+
       @media (max-width: 850px) {
         .card-container {
           width: 95%;
@@ -536,12 +524,11 @@
 
         .content-wrapper {
           flex-direction: column;
-          gap: 20px;
+          gap: 80px;
         }
 
         .image-container {
-          flex: none;
-          height: 250px;
+          height: 400px;
         }
       }
     </style>
@@ -571,18 +558,18 @@
             <div class="message">
               <h2>Gửi bạn thân mến!</h2>
               <p>
-                Nhân ngày sinh nhật của bạn, chúc bạn một ngày thật ý nghĩa,
+                Nhân ngày sinh nhật của mày , chúc mày một ngày thật ý nghĩa,
                 tràn đầy niềm vui và hạnh phúc!
               </p>
               <p>
-                Mong rằng năm mới sẽ mang đến cho bạn thật nhiều sức khỏe, may
+                Mong rằng năm mới sẽ mang đến cho mày thật nhiều sức khỏe, may
                 mắn và thành công trong cuộc sống.
               </p>
               <p>
-                Hãy luôn giữ nụ cười trên môi và tỏa sáng như những gì bạn vốn
+                Hãy luôn giữ nụ cười trên môi và tỏa sáng như những gì mày vốn
                 có!
               </p>
-              <div class="signature">Thân ái</div>
+              <div class="signature">Thân yêu</div>
             </div>
           </div>
         </div>
