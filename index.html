@@ -2,7 +2,10 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Thiệp Sinh Nhật Cao Cấp</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap"
@@ -52,8 +55,10 @@
       /* Container thiệp */
       .card-container {
         position: relative;
-        width: 1200px; /* Increase overall width */
-        height: 700px; /* Increase overall height */
+        width: 95%; /* Change from fixed width */
+        max-width: 1200px; /* Add max-width */
+        height: auto; /* Change from fixed height */
+        min-height: 600px;
         transform-style: preserve-3d;
         transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 10;
@@ -531,6 +536,116 @@
           height: 400px;
         }
       }
+
+      @media (max-width: 768px) {
+        .front h1 {
+          font-size: 2.5rem; /* Smaller font size for mobile */
+        }
+
+        .front p {
+          font-size: 1.2rem;
+        }
+
+        .front .cake {
+          font-size: 5rem;
+        }
+
+        .content-wrapper {
+          flex-direction: column;
+          gap: 40px;
+          padding: 20px;
+        }
+
+        .image-container {
+          flex: none;
+          height: 300px;
+          width: 100%;
+          transform: translateX(0);
+        }
+
+        .message-container {
+          flex: none;
+          width: 100%;
+          transform: translateX(0);
+        }
+
+        .message {
+          padding: 20px;
+        }
+
+        .message h2 {
+          font-size: 1.8rem;
+        }
+
+        .message p {
+          font-size: 1rem;
+        }
+
+        .signature {
+          font-size: 1.5rem;
+        }
+
+        .gift-box-container {
+          bottom: 80px;
+          top: auto;
+        }
+
+        .gift-box {
+          width: 100px;
+          height: 100px;
+        }
+
+        .gift-image img {
+          max-width: 80vw;
+          height: auto;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .front h1 {
+          font-size: 2rem;
+        }
+
+        .front .cake {
+          font-size: 4rem;
+        }
+
+        .message {
+          padding: 15px;
+        }
+
+        .gift-box {
+          width: 80px;
+          height: 80px;
+        }
+
+        .music-control {
+          width: 40px;
+          height: 40px;
+          font-size: 1.2rem;
+        }
+      }
+
+      /* Add orientation support */
+      @media (orientation: landscape) and (max-height: 600px) {
+        .card-container {
+          min-height: 400px;
+        }
+
+        .front .cake {
+          font-size: 3rem;
+          margin: 10px 0;
+        }
+
+        .content-wrapper {
+          flex-direction: row;
+          gap: 20px;
+        }
+
+        .image-container {
+          height: 200px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -796,10 +911,37 @@
         });
       }
 
+      // Thiết lập tương tác cho di động
+      function setupMobileInteractions() {
+        const giftBox = document.querySelector(".gift-box");
+        const giftImage = document.querySelector(".gift-image");
+
+        // Thêm sự kiện chạm
+        giftBox.addEventListener("touchend", (e) => {
+          e.preventDefault();
+          giftBox.click();
+        });
+
+        giftImage.addEventListener("touchend", (e) => {
+          e.preventDefault();
+          giftImage.click();
+        });
+
+        // Ngăn chặn phóng to khi chạm đúp
+        document.addEventListener(
+          "touchend",
+          (e) => {
+            e.preventDefault();
+          },
+          { passive: false }
+        );
+      }
+
       // Khởi tạo khi trang tải xong
       window.onload = function () {
         createStars();
-        setupCard(); // Bỏ setupMusic() vì đã được gọi trong setupCard()
+        setupCard();
+        setupMobileInteractions();
       };
     </script>
   </body>
