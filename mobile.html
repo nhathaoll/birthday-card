@@ -12,6 +12,7 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
+    <meta name="format-detection" content="telephone=no" />
     <title>Thiệp Sinh Nhật Mobile</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap"
@@ -24,16 +25,18 @@
         -webkit-tap-highlight-color: transparent;
       }
 
+      html,
       body {
         margin: 0;
         padding: 0;
-        height: 100vh;
+        height: 100%;
+        width: 100%;
         overflow-x: hidden;
         background: linear-gradient(to bottom, #111111, #2d2d2d);
         font-family: "Montserrat", sans-serif;
         color: #444;
         position: fixed;
-        width: 100%;
+        -webkit-text-size-adjust: 100%;
       }
 
       .mobile-card {
@@ -41,38 +44,42 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        padding: 15px;
-        padding-bottom: 100px;
+        padding: 5px;
+        padding-top: 10px;
+        padding-bottom: 80px;
         box-sizing: border-box;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
 
       .card-section {
-        width: 94%;
-        margin: 10px auto;
+        width: 92%;
+        margin: 8px auto;
         background: rgba(255, 255, 255, 0.98);
         border-radius: 15px;
-        padding: 15px;
+        padding: 12px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       }
 
       .header-section {
         text-align: center;
-        padding: 15px 0 5px;
+        padding: 10px 0 2px;
       }
 
       .header-section h1 {
         font-family: "Dancing Script", cursive;
-        font-size: 2.2rem;
-        margin: 10px 0;
+        font-size: 1.8rem;
+        margin: 5px 0;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         color: #ff758c;
       }
 
       .cake-emoji {
-        font-size: 3.5rem;
-        margin: 15px 0;
+        font-size: 2.8rem;
+        margin: 10px 0;
         animation: float 3s ease-in-out infinite;
         display: inline-block;
       }
@@ -167,7 +174,7 @@
       /* Gift box styling */
       .gift-box-container {
         position: fixed;
-        bottom: 85px;
+        bottom: 70px;
         left: 50%;
         transform: translate(-50%, 100px);
         z-index: 200;
@@ -182,8 +189,8 @@
       }
 
       .gift-box {
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 70px;
         position: relative;
         transform-style: preserve-3d;
         transition: transform 0.5s ease;
@@ -334,51 +341,108 @@
       /* Media queries for different screen sizes */
       @media screen and (max-height: 700px) {
         .header-section h1 {
-          font-size: 1.8rem;
-          margin: 5px 0;
+          font-size: 1.6rem;
+          margin: 4px 0;
         }
 
         .cake-emoji {
-          font-size: 3rem;
-          margin: 10px 0;
+          font-size: 2.5rem;
+          margin: 8px 0;
         }
 
         .message-section {
-          padding: 10px;
+          padding: 8px;
         }
 
         .message-section h2 {
-          font-size: 1.2rem;
-          margin-bottom: 8px;
+          font-size: 1.1rem;
+          margin-bottom: 6px;
         }
 
         .gift-box-container {
-          bottom: 75px;
+          bottom: 65px;
+        }
+
+        .gift-box {
+          width: 60px;
+          height: 60px;
         }
       }
 
-      @media screen and (max-width: 320px) {
+      @media screen and (max-width: 360px) {
         .header-section h1 {
-          font-size: 1.6rem;
+          font-size: 1.5rem;
         }
 
         .message-section p {
           font-size: 0.85rem;
+          margin-bottom: 8px;
         }
 
         .signature {
-          font-size: 1.3rem;
+          font-size: 1.2rem;
+          margin-top: 10px;
+        }
+
+        .card-section {
+          width: 94%;
+          padding: 10px;
+        }
+
+        .mobile-card {
+          padding: 3px;
+          padding-bottom: 70px;
+        }
+      }
+
+      /* Thêm media query cho màn hình rất nhỏ */
+      @media screen and (max-width: 320px) {
+        .header-section h1 {
+          font-size: 1.4rem;
+        }
+
+        .cake-emoji {
+          font-size: 2.2rem;
+        }
+
+        .message-section p {
+          font-size: 0.8rem;
+          margin-bottom: 6px;
+        }
+
+        .signature {
+          font-size: 1.1rem;
         }
 
         .gift-box {
-          width: 70px;
-          height: 70px;
+          width: 55px;
+          height: 55px;
+        }
+
+        .music-control {
+          width: 38px;
+          height: 38px;
+          font-size: 1rem;
+        }
+      }
+
+      /* Fix specific issues for iPhone X and similar notch phones */
+      @supports (padding: max(0px)) {
+        .mobile-card {
+          padding-left: max(5px, env(safe-area-inset-left));
+          padding-right: max(5px, env(safe-area-inset-right));
+          padding-bottom: max(80px, env(safe-area-inset-bottom) + 70px);
+        }
+
+        .music-control {
+          bottom: max(25px, env(safe-area-inset-bottom) + 15px);
+          left: max(25px, env(safe-area-inset-left) + 15px);
         }
       }
     </style>
   </head>
   <body ontouchstart="">
-    <div class="mobile-card">
+    <div class="mobile-card" id="mobileCard">
       <div class="header-section slide-in">
         <h1>Chúc Mừng Sinh Nhật!</h1>
         <div class="cake-emoji">🎂</div>
@@ -542,11 +606,32 @@
         giftImg.src = "download (4).jpg";
       }
 
+      // Điều chỉnh kích thước cho phù hợp với màn hình
+      function adjustToViewport() {
+        // Đảm bảo chiều cao mobile-card đúng với chiều cao thực tế của viewport
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty("--vh", `${vh}px`);
+
+        // Điều chỉnh padding bottom cho safe area
+        const mobileCard = document.getElementById("mobileCard");
+        if (mobileCard) {
+          // Điều chỉnh cho các thiết bị có notch hoặc thanh điều hướng
+          if (window.innerHeight < 700) {
+            mobileCard.style.paddingBottom = "70px";
+          }
+        }
+      }
+
+      // Chạy điều chỉnh khi thay đổi kích thước hoặc xoay màn hình
+      window.addEventListener("resize", adjustToViewport);
+      window.addEventListener("orientationchange", adjustToViewport);
+
       // Khởi tạo khi trang tải xong
       document.addEventListener("DOMContentLoaded", function () {
         setupGiftBox();
         setupMusic();
         preloadImages();
+        adjustToViewport();
 
         // Chặn hiệu ứng pinch zoom trên iOS
         document.addEventListener(
@@ -558,6 +643,18 @@
           },
           { passive: false }
         );
+
+        // Thêm fix cho viewport trên iOS
+        window.addEventListener("focusin", function (e) {
+          if (
+            /iPhone|iPad|iPod/i.test(navigator.userAgent) &&
+            (e.target.tagName === "INPUT" ||
+              e.target.tagName === "TEXTAREA" ||
+              e.target.tagName === "SELECT")
+          ) {
+            document.body.scrollTop = 0;
+          }
+        });
       });
     </script>
   </body>
