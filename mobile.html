@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Thiệp Sinh Nhật Mobile</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #111;
+        min-height: 100vh;
+        font-family: "Montserrat", sans-serif;
+      }
+
+      .mobile-card {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: hidden;
+      }
+
+      .card-section {
+        width: 90%;
+        margin: 20px auto;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .header-section {
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      .header-section h1 {
+        font-family: "Dancing Script", cursive;
+        font-size: 2.5rem;
+        color: #ff758c;
+        margin: 10px 0;
+      }
+
+      .cake-emoji {
+        font-size: 4rem;
+        margin: 20px 0;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .image-section {
+        width: 100%;
+        height: 300px;
+        margin: 20px 0;
+      }
+
+      .image-section img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+        border: 5px solid white;
+      }
+
+      .message-section {
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      .gift-section {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 80px;
+        height: 80px;
+      }
+
+      .music-control {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      /* Animation classes */
+      .slide-in {
+        animation: slideIn 0.5s ease forwards;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Thêm hiệu ứng cho gift box */
+      .gift-box-container {
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translate(-50%, 0) scale(0);
+        z-index: 200;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        filter: drop-shadow(0 0 20px rgba(255, 82, 119, 0.2));
+      }
+
+      .gift-box-container.show {
+        transform: translate(-50%, 0) scale(1);
+      }
+
+      .gift-box {
+        width: 120px;
+        height: 120px;
+        position: relative;
+        cursor: pointer;
+        transform-style: preserve-3d;
+        transition: transform 0.5s ease;
+      }
+
+      .gift-box:hover {
+        transform: translateY(-5px) rotate(3deg);
+      }
+
+      .gift-box-lid {
+        width: 110%;
+        height: 45px;
+        background: linear-gradient(to right, #ff5277, #ff7eb3);
+        position: absolute;
+        top: -45px;
+        left: -5%;
+        border-radius: 10px 10px 0 0;
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform-origin: bottom;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2),
+          inset 0 5px 10px rgba(255, 255, 255, 0.3);
+      }
+
+      .gift-box-body {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+        position: relative;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2),
+          inset 0 5px 10px rgba(255, 255, 255, 0.5),
+          inset 0 -5px 10px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+
+      .gift-box::after,
+      .gift-box::before {
+        content: "";
+        position: absolute;
+        background: #ff5277;
+        z-index: 1;
+      }
+
+      .gift-box::after {
+        width: 25px;
+        height: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 0.4) 0%,
+          #ff5277 30%,
+          #ff5277 70%,
+          rgba(255, 255, 255, 0.4) 100%
+        );
+      }
+
+      .gift-box::before {
+        height: 25px;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.4) 0%,
+          #ff5277 30%,
+          #ff5277 70%,
+          rgba(255, 255, 255, 0.4) 100%
+        );
+      }
+
+      .gift-box .ribbon {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        background: #ff3366;
+        border-radius: 50%;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .gift-box .ribbon::after {
+        content: "🎀";
+        position: absolute;
+        font-size: 30px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .gift-image {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        z-index: 201;
+        opacity: 0;
+        transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        border-radius: 15px;
+      }
+
+      .gift-image.show {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+
+      .gift-image img {
+        max-width: 80vw;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Thêm hiệu ứng confetti */
+      .confetti-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 99;
+      }
+    </style>
+    <script>
+      function isMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+      }
+
+      if (isMobile()) {
+        window.location.href = "mobile.html";
+      }
+    </script>
+  </head>
+  <body>
+    <div class="mobile-card">
+      <div class="header-section slide-in">
+        <h1>Chúc Mừng Sinh Nhật!</h1>
+        <div class="cake-emoji">🎂</div>
+      </div>
+
+      <div class="card-section slide-in" style="animation-delay: 0.2s">
+        <div class="image-section">
+          <img src="download (5).jpg" alt="Birthday Image" />
+        </div>
+      </div>
+
+      <div class="card-section slide-in" style="animation-delay: 0.4s">
+        <div class="message-section">
+          <h2>Gửi bạn thân mến!</h2>
+          <p>
+            Nhân ngày sinh nhật của mày, chúc mày một ngày thật ý nghĩa, tràn
+            đầy niềm vui và hạnh phúc!
+          </p>
+          <p>
+            Mong rằng năm mới sẽ mang đến cho mày thật nhiều sức khỏe, may mắn
+            và thành công trong cuộc sống.
+          </p>
+          <p>
+            Hãy luôn giữ nụ cười trên môi và tỏa sáng như những gì mày vốn có!
+          </p>
+          <div
+            style="
+              text-align: right;
+              font-family: 'Dancing Script', cursive;
+              font-size: 1.5rem;
+              color: #ff6b6b;
+            "
+          >
+            Thân yêu
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thêm gift box container -->
+    <div class="gift-box-container" id="giftBoxContainer">
+      <div class="gift-box">
+        <div class="gift-box-lid"></div>
+        <div class="ribbon"></div>
+        <div class="gift-box-body"></div>
+      </div>
+      <div class="gift-image">
+        <img src="download (4).jpg" alt="Món quà" />
+      </div>
+    </div>
+
+    <!-- Thêm confetti container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <div class="music-control" id="musicControl">♪</div>
+    <audio id="bgMusic" loop>
+      <source src="HPBD.mp4" type="audio/mpeg" />
+    </audio>
+
+    <!-- Thêm script xử lý -->
+    <script>
+      function setupGiftBox() {
+        const giftBoxContainer = document.getElementById("giftBoxContainer");
+        const giftBox = giftBoxContainer.querySelector(".gift-box");
+        const giftImage = giftBoxContainer.querySelector(".gift-image");
+
+        setTimeout(() => {
+          giftBoxContainer.classList.add("show");
+        }, 1500);
+
+        giftBox.addEventListener("click", () => {
+          giftBox.classList.add("open");
+          setTimeout(() => {
+            giftImage.classList.add("show");
+          }, 500);
+        });
+
+        giftImage.addEventListener("click", () => {
+          giftImage.classList.remove("show");
+          setTimeout(() => {
+            giftBox.classList.remove("open");
+          }, 500);
+        });
+      }
+
+      function isMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+      }
+
+      if (isMobile()) {
+        window.location.href = "mobile.html";
+      }
+
+      function setupMusic() {
+        const bgMusic = document.getElementById("bgMusic");
+        const musicControl = document.getElementById("musicControl");
+        let isPlaying = false;
+
+        musicControl.addEventListener("click", () => {
+          if (isPlaying) {
+            bgMusic.pause();
+            musicControl.textContent = "♪";
+          } else {
+            bgMusic.play();
+            musicControl.textContent = "❚❚";
+          }
+          isPlaying = !isPlaying;
+        });
+      }
+
+      // Khởi tạo khi trang tải xong
+      window.onload = function () {
+        setupGiftBox();
+        setupMusic();
+      };
+    </script>
+  </body>
+</html>
