@@ -18,28 +18,38 @@
       rel="stylesheet"
     />
     <style>
-      /* Cập nhật CSS cho mobile */
+      /* CSS tối ưu cho mobile */
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
       body {
         margin: 0;
         padding: 0;
-        height: 100%;
+        height: 100vh;
         overflow-x: hidden;
         background: linear-gradient(to bottom, #111111, #2d2d2d);
         font-family: "Montserrat", sans-serif;
+        color: #444;
+        position: fixed;
+        width: 100%;
       }
 
       .mobile-card {
         width: 100%;
-        min-height: 100vh;
+        height: 100%;
         display: flex;
         flex-direction: column;
         padding: 15px;
-        padding-bottom: 120px;
+        padding-bottom: 100px;
         box-sizing: border-box;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       .card-section {
-        width: 92%;
+        width: 94%;
         margin: 10px auto;
         background: rgba(255, 255, 255, 0.98);
         border-radius: 15px;
@@ -49,12 +59,12 @@
 
       .header-section {
         text-align: center;
-        padding: 15px 0;
+        padding: 15px 0 5px;
       }
 
       .header-section h1 {
         font-family: "Dancing Script", cursive;
-        font-size: 2rem;
+        font-size: 2.2rem;
         margin: 10px 0;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         color: #ff758c;
@@ -64,15 +74,19 @@
         font-size: 3.5rem;
         margin: 15px 0;
         animation: float 3s ease-in-out infinite;
+        display: inline-block;
       }
 
       .image-section {
         width: 100%;
-        height: 280px;
+        height: 0;
+        padding-bottom: 66.67%; /* Aspect ratio 3:2 */
+        position: relative;
         margin: 5px 0;
       }
 
       .image-section img {
+        position: absolute;
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -83,7 +97,7 @@
 
       .message-section {
         padding: 12px;
-        line-height: 1.5;
+        line-height: 1.6;
       }
 
       .message-section h2 {
@@ -94,16 +108,16 @@
 
       .message-section p {
         font-size: 0.95rem;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         color: #444;
       }
 
-      .gift-section {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 80px;
-        height: 80px;
+      .signature {
+        text-align: right;
+        font-family: "Dancing Script", cursive;
+        font-size: 1.5rem;
+        color: #ff6b6b;
+        margin-top: 15px;
       }
 
       .music-control {
@@ -116,11 +130,14 @@
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
         border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
         font-size: 1.2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 100;
       }
 
       @keyframes float {
@@ -129,51 +146,50 @@
           transform: translateY(0);
         }
         50% {
-          transform: translateY(-20px);
+          transform: translateY(-15px);
         }
       }
 
       /* Animation classes */
       .slide-in {
-        animation: slideIn 0.5s ease forwards;
+        opacity: 0;
+        transform: translateY(50px);
+        animation: slideIn 0.8s ease forwards;
       }
 
       @keyframes slideIn {
-        from {
-          transform: translateY(50px);
-          opacity: 0;
-        }
         to {
           transform: translateY(0);
           opacity: 1;
         }
       }
 
-      /* Thêm hiệu ứng cho gift box */
+      /* Gift box styling */
       .gift-box-container {
         position: fixed;
         bottom: 85px;
         left: 50%;
-        transform: translate(-50%, 0) scale(0);
+        transform: translate(-50%, 100px);
         z-index: 200;
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         filter: drop-shadow(0 0 20px rgba(255, 82, 119, 0.2));
+        opacity: 0;
       }
 
       .gift-box-container.show {
-        transform: translate(-50%, 0) scale(1);
+        transform: translate(-50%, 0);
+        opacity: 1;
       }
 
       .gift-box {
-        width: 90px;
-        height: 90px;
+        width: 80px;
+        height: 80px;
         position: relative;
-        cursor: pointer;
         transform-style: preserve-3d;
         transition: transform 0.5s ease;
       }
 
-      .gift-box:hover {
+      .gift-box:active {
         transform: translateY(-5px) rotate(3deg);
       }
 
@@ -189,6 +205,10 @@
         transform-origin: bottom;
         box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2),
           inset 0 5px 10px rgba(255, 255, 255, 0.3);
+      }
+
+      .gift-box.open .gift-box-lid {
+        transform: rotateX(-110deg);
       }
 
       .gift-box-body {
@@ -239,7 +259,7 @@
         );
       }
 
-      .gift-box .ribbon {
+      .ribbon {
         position: absolute;
         width: 60px;
         height: 60px;
@@ -252,7 +272,7 @@
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
       }
 
-      .gift-box .ribbon::after {
+      .ribbon::after {
         content: "🎀";
         position: absolute;
         font-size: 30px;
@@ -263,99 +283,114 @@
 
       .gift-image {
         position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-        z-index: 201;
-        opacity: 0;
-        transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        background: rgba(0, 0, 0, 0.8);
-        padding: 20px;
-        border-radius: 15px;
-      }
-
-      .gift-image.show {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-      }
-
-      .gift-image img {
-        max-width: 80vw;
-        border-radius: 10px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      }
-
-      /* Thêm hiệu ứng confetti */
-      .confetti-container {
-        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 201;
+        opacity: 0;
         pointer-events: none;
-        z-index: 99;
+        transition: opacity 0.4s ease;
+        padding: 20px;
       }
 
-      /* Adjust font sizes for better readability */
+      .gift-image.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .gift-image img {
+        max-width: 90%;
+        max-height: 80vh;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        transform: scale(0.8);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .gift-image.show img {
+        transform: scale(1);
+      }
+
+      /* Confetti CSS & keyframes */
+      .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #f00;
+        animation: fall linear forwards;
+      }
+
+      @keyframes fall {
+        to {
+          transform: translateY(105vh) rotate(360deg);
+        }
+      }
+
+      /* Media queries for different screen sizes */
       @media screen and (max-height: 700px) {
-        .mobile-card {
-          padding-bottom: 100px;
-        }
-
-        .image-section {
-          height: 220px;
-        }
-
-        .gift-box-container {
-          bottom: 75px;
-        }
-
-        .gift-box {
-          width: 80px;
-          height: 80px;
-        }
-      }
-
-      @media screen and (max-width: 320px) {
         .header-section h1 {
           font-size: 1.8rem;
+          margin: 5px 0;
+        }
+
+        .cake-emoji {
+          font-size: 3rem;
+          margin: 10px 0;
         }
 
         .message-section {
           padding: 10px;
         }
 
+        .message-section h2 {
+          font-size: 1.2rem;
+          margin-bottom: 8px;
+        }
+
+        .gift-box-container {
+          bottom: 75px;
+        }
+      }
+
+      @media screen and (max-width: 320px) {
+        .header-section h1 {
+          font-size: 1.6rem;
+        }
+
         .message-section p {
-          font-size: 0.9rem;
+          font-size: 0.85rem;
+        }
+
+        .signature {
+          font-size: 1.3rem;
+        }
+
+        .gift-box {
+          width: 70px;
+          height: 70px;
         }
       }
     </style>
-    <script>
-      function isMobile() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        );
-      }
-
-      if (isMobile()) {
-        window.location.href = "mobile.html";
-      }
-    </script>
   </head>
-  <body>
+  <body ontouchstart="">
     <div class="mobile-card">
       <div class="header-section slide-in">
         <h1>Chúc Mừng Sinh Nhật!</h1>
         <div class="cake-emoji">🎂</div>
       </div>
 
-      <div class="card-section slide-in" style="animation-delay: 0.2s">
+      <div class="card-section slide-in" style="animation-delay: 0.3s">
         <div class="image-section">
-          <img src="download (5).jpg" alt="Birthday Image" />
+          <img src="download (5).jpg" alt="Birthday Image" id="birthdayImage" />
         </div>
       </div>
 
-      <div class="card-section slide-in" style="animation-delay: 0.4s">
+      <div class="card-section slide-in" style="animation-delay: 0.6s">
         <div class="message-section">
           <h2>Gửi bạn thân mến!</h2>
           <p>
@@ -369,76 +404,109 @@
           <p>
             Hãy luôn giữ nụ cười trên môi và tỏa sáng như những gì mày vốn có!
           </p>
-          <div
-            style="
-              text-align: right;
-              font-family: 'Dancing Script', cursive;
-              font-size: 1.5rem;
-              color: #ff6b6b;
-            "
-          >
-            Thân yêu
-          </div>
+          <div class="signature">Thân yêu</div>
         </div>
       </div>
     </div>
 
-    <!-- Thêm gift box container -->
+    <!-- Quà tặng sinh nhật -->
     <div class="gift-box-container" id="giftBoxContainer">
-      <div class="gift-box">
+      <div class="gift-box" id="giftBox">
         <div class="gift-box-lid"></div>
         <div class="ribbon"></div>
         <div class="gift-box-body"></div>
       </div>
-      <div class="gift-image">
-        <img src="download (4).jpg" alt="Món quà" />
-      </div>
     </div>
 
-    <!-- Thêm confetti container -->
-    <div class="confetti-container" id="confettiContainer"></div>
+    <!-- Ảnh quà -->
+    <div class="gift-image" id="giftImage">
+      <img src="download (4).jpg" alt="Món quà" />
+    </div>
 
+    <!-- Nút phát nhạc -->
     <div class="music-control" id="musicControl">♪</div>
     <audio id="bgMusic" loop>
       <source src="HPBD.mp4" type="audio/mpeg" />
     </audio>
 
-    <!-- Thêm script xử lý -->
     <script>
-      function setupGiftBox() {
-        const giftBoxContainer = document.getElementById("giftBoxContainer");
-        const giftBox = giftBoxContainer.querySelector(".gift-box");
-        const giftImage = giftBoxContainer.querySelector(".gift-image");
+      // Tạo hiệu ứng confetti
+      function createConfetti() {
+        const confettiColors = [
+          "#ff5277",
+          "#ff7eb3",
+          "#ff9f4d",
+          "#ffcf4d",
+          "#75dddd",
+          "#83dde0",
+          "#a8e6cf",
+          "#6fb3b8",
+        ];
 
+        const confettiCount = 150;
+
+        for (let i = 0; i < confettiCount; i++) {
+          setTimeout(() => {
+            const confetti = document.createElement("div");
+            confetti.classList.add("confetti");
+
+            // Random position, size, color
+            const size = Math.floor(Math.random() * 8) + 5;
+            const positionX = Math.random() * window.innerWidth;
+            const color =
+              confettiColors[Math.floor(Math.random() * confettiColors.length)];
+            const rotation = Math.random() * 360;
+            const duration = Math.random() * 2 + 2;
+
+            confetti.style.width = `${size}px`;
+            confetti.style.height = `${size}px`;
+            confetti.style.top = "-20px";
+            confetti.style.left = `${positionX}px`;
+            confetti.style.backgroundColor = color;
+            confetti.style.borderRadius = Math.random() > 0.5 ? "50%" : "0";
+            confetti.style.transform = `rotate(${rotation}deg)`;
+            confetti.style.animationDuration = `${duration}s`;
+
+            document.body.appendChild(confetti);
+
+            // Remove confetti after animation ends
+            setTimeout(() => {
+              confetti.remove();
+            }, duration * 1000);
+          }, i * 20);
+        }
+      }
+
+      // Khởi tạo gift box
+      function setupGiftBox() {
+        const giftBox = document.getElementById("giftBox");
+        const giftImage = document.getElementById("giftImage");
+        const giftBoxContainer = document.getElementById("giftBoxContainer");
+
+        // Hiển thị hộp quà sau một khoảng thời gian
         setTimeout(() => {
           giftBoxContainer.classList.add("show");
-        }, 1500);
+        }, 2000);
 
+        // Xử lý click vào hộp quà
         giftBox.addEventListener("click", () => {
           giftBox.classList.add("open");
           setTimeout(() => {
             giftImage.classList.add("show");
+            createConfetti();
           }, 500);
         });
 
+        // Đóng ảnh khi click vào nó
         giftImage.addEventListener("click", () => {
           giftImage.classList.remove("show");
           setTimeout(() => {
             giftBox.classList.remove("open");
-          }, 500);
+          }, 300);
         });
       }
 
-      function isMobile() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        );
-      }
-
-      if (isMobile()) {
-        window.location.href = "mobile.html";
-      }
-
+      // Xử lý nhạc
       function setupMusic() {
         const bgMusic = document.getElementById("bgMusic");
         const musicControl = document.getElementById("musicControl");
@@ -448,19 +516,49 @@
           if (isPlaying) {
             bgMusic.pause();
             musicControl.textContent = "♪";
+            musicControl.style.animation = "";
           } else {
-            bgMusic.play();
+            bgMusic.play().catch((e) => {
+              console.log("Không thể phát nhạc tự động:", e);
+            });
             musicControl.textContent = "❚❚";
+            musicControl.style.animation = "pulse 1s infinite";
           }
           isPlaying = !isPlaying;
         });
       }
 
+      // Tải trước hình ảnh để tránh nhấp nháy
+      function preloadImages() {
+        const birthdayImage = document.getElementById("birthdayImage");
+
+        if (birthdayImage) {
+          const imgSrc = birthdayImage.getAttribute("src");
+          const img = new Image();
+          img.src = imgSrc;
+        }
+
+        const giftImg = new Image();
+        giftImg.src = "download (4).jpg";
+      }
+
       // Khởi tạo khi trang tải xong
-      window.onload = function () {
+      document.addEventListener("DOMContentLoaded", function () {
         setupGiftBox();
         setupMusic();
-      };
+        preloadImages();
+
+        // Chặn hiệu ứng pinch zoom trên iOS
+        document.addEventListener(
+          "touchmove",
+          function (e) {
+            if (e.scale !== 1) {
+              e.preventDefault();
+            }
+          },
+          { passive: false }
+        );
+      });
     </script>
   </body>
 </html>
