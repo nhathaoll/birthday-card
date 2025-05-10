@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
     />
     <title>Thiệp Sinh Nhật Cao Cấp</title>
     <link
@@ -646,6 +646,43 @@
           height: 200px;
         }
       }
+
+      /* Add to your existing CSS */
+      @media (hover: none) {
+        .open-btn,
+        .close-btn,
+        .gift-box,
+        .music-control {
+          cursor: default;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .gift-box:hover {
+          transform: none;
+        }
+
+        .gift-image img:hover {
+          transform: none;
+        }
+      }
+
+      /* Improve touch targets */
+      @media (max-width: 768px) {
+        .open-btn {
+          padding: 15px 40px;
+          font-size: 1.4rem;
+        }
+
+        .close-btn {
+          width: 50px;
+          height: 50px;
+        }
+
+        .music-control {
+          width: 50px;
+          height: 50px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -893,48 +930,65 @@
         const musicPlayer = setupMusic();
         const giftBox = setupGiftBox();
 
-        openBtn.addEventListener("click", function () {
+        const openCard = () => {
           card.classList.add("open");
           createConfetti();
           sound.currentTime = 0;
-          sound.play();
+          sound.play().catch((err) => console.log("Sound play error:", err));
           musicPlayer.play();
-          giftBox.show(); // Hiển thị hộp quà
-        });
+          giftBox.show();
+        };
 
-        closeBtn.addEventListener("click", function () {
+        const closeCard = () => {
           card.classList.remove("open");
-          document.getElementById("giftBoxContainer").classList.remove("show");
-          s;
-          document.querySelector(".gift-box").classList.remove("open");
-          document.querySelector(".gift-image").classList.remove("show");
-        });
+          const giftBoxContainer = document.getElementById("giftBoxContainer");
+          const giftBoxElement = document.querySelector(".gift-box");
+          const giftImage = document.querySelector(".gift-image");
+
+          if (giftBoxContainer) giftBoxContainer.classList.remove("show");
+          if (giftBoxElement) giftBoxElement.classList.remove("open");
+          if (giftImage) giftImage.classList.remove("show");
+        };
+
+        // Add both click and touch events
+        openBtn.addEventListener("click", openCard);
+        closeBtn.addEventListener("click", closeCard);
       }
 
-      // Thiết lập tương tác cho di động
+      // Update setupMobileInteractions function
       function setupMobileInteractions() {
         const giftBox = document.querySelector(".gift-box");
         const giftImage = document.querySelector(".gift-image");
+        const openBtn = document.getElementById("openBtn");
+        const closeBtn = document.getElementById("closeBtn");
+        const musicControl = document.getElementById("musicControl");
 
-        // Thêm sự kiện chạm
-        giftBox.addEventListener("touchend", (e) => {
-          e.preventDefault();
-          giftBox.click();
-        });
+        // Handle touch events for all interactive elements
+        [giftBox, giftImage, openBtn, closeBtn, musicControl].forEach(
+          (element) => {
+            if (element) {
+              element.addEventListener("touchstart", (e) => {
+                e.preventDefault();
+              });
 
-        giftImage.addEventListener("touchend", (e) => {
-          e.preventDefault();
-          giftImage.click();
-        });
-
-        // Ngăn chặn phóng to khi chạm đúp
-        document.addEventListener(
-          "touchend",
-          (e) => {
-            e.preventDefault();
-          },
-          { passive: false }
+              element.addEventListener("touchend", (e) => {
+                e.preventDefault();
+                element.click();
+              });
+            }
+          }
         );
+
+        // Fix double tap zoom
+        let lastTap = 0;
+        document.addEventListener("touchend", (e) => {
+          const currentTime = new Date().getTime();
+          const tapLength = currentTime - lastTap;
+          if (tapLength < 500 && tapLength > 0) {
+            e.preventDefault();
+          }
+          lastTap = currentTime;
+        });
       }
 
       // Khởi tạo khi trang tải xong
